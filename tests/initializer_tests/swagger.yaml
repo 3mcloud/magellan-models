@@ -1,0 +1,2340 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/data_values":
+    post:
+      summary: Creates a Data value
+      tags:
+      - DataValues
+      parameters: []
+      responses:
+        '201':
+          description: data value created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          id:
+                            type: string
+                            nullable: false
+                          variable_type:
+                            type: string
+                            nullable: false
+                            enum:
+                            - json
+                            - number
+                            - string
+                            - node
+                            - categorical
+                            - file
+                            - json
+                          index:
+                            type: number
+                            nullable: true
+                          json:
+                            type: object
+                            nullable: true
+                          value:
+                            type: number
+                            nullable: true
+                          text:
+                            type: string
+                            nullable: true
+                          file:
+                            type: string
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          related_data:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          source:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          parent_node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          parent_data:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          transform:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        id:
+                          type: string
+                          nullable: false
+                        variable_type:
+                          type: string
+                          nullable: false
+                          enum:
+                          - json
+                          - number
+                          - string
+                          - node
+                          - categorical
+                          - file
+                          - json
+                        index:
+                          type: number
+                          nullable: true
+                        json:
+                          type: object
+                          nullable: true
+                        value:
+                          type: number
+                          nullable: true
+                        text:
+                          type: string
+                          nullable: true
+                        file:
+                          type: string
+                          nullable: true
+                    relationships:
+                      type: object
+                      properties:
+                        related_data:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        source:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        parent_node:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        parent_data:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        transform:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+    get:
+      summary: Returns a list of Data values
+      tags:
+      - DataValues
+      responses:
+        '200':
+          description: data value list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        attributes:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                              nullable: true
+                            id:
+                              type: string
+                              nullable: false
+                            variable_type:
+                              type: string
+                              nullable: false
+                              enum:
+                              - json
+                              - number
+                              - string
+                              - node
+                              - categorical
+                              - file
+                              - json
+                            index:
+                              type: number
+                              nullable: true
+                            json:
+                              type: object
+                              nullable: true
+                            value:
+                              type: number
+                              nullable: true
+                            text:
+                              type: string
+                              nullable: true
+                            file:
+                              type: string
+                              nullable: true
+                        relationships:
+                          type: object
+                          properties:
+                            related_data:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            source:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                            parent_node:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                            parent_data:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                            transform:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+  "/data_values/{id}":
+    get:
+      summary: retrieves a single Data Value
+      tags:
+      - DataValues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Data value found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          id:
+                            type: string
+                            nullable: false
+                          variable_type:
+                            type: string
+                            nullable: false
+                            enum:
+                            - json
+                            - number
+                            - string
+                            - node
+                            - categorical
+                            - file
+                            - json
+                          index:
+                            type: number
+                            nullable: true
+                          json:
+                            type: object
+                            nullable: true
+                          value:
+                            type: number
+                            nullable: true
+                          text:
+                            type: string
+                            nullable: true
+                          file:
+                            type: string
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          related_data:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          source:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          parent_node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          parent_data:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          transform:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+        '404':
+          description: data value not found
+          content: {}
+    patch:
+      summary: updates a data value
+      tags:
+      - DataValues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: data value updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          id:
+                            type: string
+                            nullable: false
+                          variable_type:
+                            type: string
+                            nullable: false
+                            enum:
+                            - json
+                            - number
+                            - string
+                            - node
+                            - categorical
+                            - file
+                            - json
+                          index:
+                            type: number
+                            nullable: true
+                          json:
+                            type: object
+                            nullable: true
+                          value:
+                            type: number
+                            nullable: true
+                          text:
+                            type: string
+                            nullable: true
+                          file:
+                            type: string
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          related_data:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          source:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          parent_node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          parent_data:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          transform:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        id:
+                          type: string
+                          nullable: false
+                        variable_type:
+                          type: string
+                          nullable: false
+                          enum:
+                          - json
+                          - number
+                          - string
+                          - node
+                          - categorical
+                          - file
+                          - json
+                        index:
+                          type: number
+                          nullable: true
+                        json:
+                          type: object
+                          nullable: true
+                        value:
+                          type: number
+                          nullable: true
+                        text:
+                          type: string
+                          nullable: true
+                        file:
+                          type: string
+                          nullable: true
+                    relationships:
+                      type: object
+                      properties:
+                        related_data:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        source:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        parent_node:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        parent_data:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        transform:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+    delete:
+      summary: deletes a data value
+      tags:
+      - DataValues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: data value deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+  "/nodes":
+    post:
+      summary: Creates a node
+      tags:
+      - Nodes
+      parameters: []
+      responses:
+        '201':
+          description: node created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          alternate_names:
+                            type: array
+                            items:
+                              type: string
+                          group_id:
+                            type: array
+                            items:
+                              type: string
+                          type:
+                            type: string
+                          definition:
+                            type: boolean
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          nodes:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          instances:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          parent:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        alternate_names:
+                          type: array
+                          items:
+                            type: string
+                        group_id:
+                          type: array
+                          items:
+                            type: string
+                        type:
+                          type: string
+                        definition:
+                          type: boolean
+                          nullable: true
+                    relationships:
+                      type: object
+                      properties:
+                        nodes:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        instances:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        parent:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        node:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+    get:
+      summary: Returns a list of nodes
+      tags:
+      - Nodes
+      responses:
+        '200':
+          description: node list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        attributes:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                              nullable: true
+                            alternate_names:
+                              type: array
+                              items:
+                                type: string
+                            group_id:
+                              type: array
+                              items:
+                                type: string
+                            type:
+                              type: string
+                            definition:
+                              type: boolean
+                              nullable: true
+                        relationships:
+                          type: object
+                          properties:
+                            nodes:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            instances:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            data_values:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            parent:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                            node:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+  "/nodes/{id}":
+    get:
+      summary: retrieves a single node
+      tags:
+      - Nodes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: node found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          alternate_names:
+                            type: array
+                            items:
+                              type: string
+                          group_id:
+                            type: array
+                            items:
+                              type: string
+                          type:
+                            type: string
+                          definition:
+                            type: boolean
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          nodes:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          instances:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          parent:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+        '404':
+          description: node not found
+          content: {}
+    patch:
+      summary: updates a node
+      tags:
+      - Nodes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: node updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          alternate_names:
+                            type: array
+                            items:
+                              type: string
+                          group_id:
+                            type: array
+                            items:
+                              type: string
+                          type:
+                            type: string
+                          definition:
+                            type: boolean
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          nodes:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          instances:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          parent:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        alternate_names:
+                          type: array
+                          items:
+                            type: string
+                        group_id:
+                          type: array
+                          items:
+                            type: string
+                        type:
+                          type: string
+                        definition:
+                          type: boolean
+                          nullable: true
+                    relationships:
+                      type: object
+                      properties:
+                        nodes:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        instances:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        parent:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        node:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+    delete:
+      summary: deletes a node
+      tags:
+      - Nodes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: node deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+  "/samples":
+    post:
+      summary: Creates a sample
+      tags:
+      - Samples
+      parameters: []
+      responses:
+        '201':
+          description: sample created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          alternate_names:
+                            type: array
+                            items:
+                              type: string
+                          group_id:
+                            type: array
+                            items:
+                              type: string
+                          type:
+                            type: string
+                          definition:
+                            type: boolean
+                            nullable: true
+                          qid:
+                            type: string
+                            nullable: true
+                          tags:
+                            type: array
+                            items:
+                              type: string
+                          category:
+                            type: string
+                            nullable: true
+                          meta:
+                            type: object
+                      relationships:
+                        type: object
+                        properties:
+                          nodes:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          instances:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          parent:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        alternate_names:
+                          type: array
+                          items:
+                            type: string
+                        group_id:
+                          type: array
+                          items:
+                            type: string
+                        type:
+                          type: string
+                        definition:
+                          type: boolean
+                          nullable: true
+                        qid:
+                          type: string
+                          nullable: true
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                        category:
+                          type: string
+                          nullable: true
+                        meta:
+                          type: object
+                    relationships:
+                      type: object
+                      properties:
+                        nodes:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        instances:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        parent:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        node:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+    get:
+      summary: Returns a list of samples
+      tags:
+      - Samples
+      responses:
+        '200':
+          description: sample list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        attributes:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                              nullable: true
+                            alternate_names:
+                              type: array
+                              items:
+                                type: string
+                            group_id:
+                              type: array
+                              items:
+                                type: string
+                            type:
+                              type: string
+                            definition:
+                              type: boolean
+                              nullable: true
+                            qid:
+                              type: string
+                              nullable: true
+                            tags:
+                              type: array
+                              items:
+                                type: string
+                            category:
+                              type: string
+                              nullable: true
+                            meta:
+                              type: object
+                        relationships:
+                          type: object
+                          properties:
+                            nodes:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            instances:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            data_values:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+                            parent:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                            node:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+  "/samples/{id}":
+    get:
+      summary: retrieves a single sample
+      tags:
+      - Samples
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: sample found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          alternate_names:
+                            type: array
+                            items:
+                              type: string
+                          group_id:
+                            type: array
+                            items:
+                              type: string
+                          type:
+                            type: string
+                          definition:
+                            type: boolean
+                            nullable: true
+                          qid:
+                            type: string
+                            nullable: true
+                          tags:
+                            type: array
+                            items:
+                              type: string
+                          category:
+                            type: string
+                            nullable: true
+                          meta:
+                            type: object
+                      relationships:
+                        type: object
+                        properties:
+                          nodes:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          instances:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          parent:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+        '404':
+          description: sample not found
+          content: {}
+    patch:
+      summary: updates a sample
+      tags:
+      - Samples
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: sample updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          alternate_names:
+                            type: array
+                            items:
+                              type: string
+                          group_id:
+                            type: array
+                            items:
+                              type: string
+                          type:
+                            type: string
+                          definition:
+                            type: boolean
+                            nullable: true
+                          qid:
+                            type: string
+                            nullable: true
+                          tags:
+                            type: array
+                            items:
+                              type: string
+                          category:
+                            type: string
+                            nullable: true
+                          meta:
+                            type: object
+                      relationships:
+                        type: object
+                        properties:
+                          nodes:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          instances:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+                          parent:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                          node:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        alternate_names:
+                          type: array
+                          items:
+                            type: string
+                        group_id:
+                          type: array
+                          items:
+                            type: string
+                        type:
+                          type: string
+                        definition:
+                          type: boolean
+                          nullable: true
+                        qid:
+                          type: string
+                          nullable: true
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                        category:
+                          type: string
+                          nullable: true
+                        meta:
+                          type: object
+                    relationships:
+                      type: object
+                      properties:
+                        nodes:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        instances:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                        parent:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                        node:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+    delete:
+      summary: deletes a sample
+      tags:
+      - Samples
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: sample deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+  "/sources":
+    post:
+      summary: Creates a source
+      tags:
+      - Sources
+      parameters: []
+      responses:
+        '201':
+          description: Source created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          read_url:
+                            type: string
+                            nullable: true
+                          write_url:
+                            type: string
+                            nullable: true
+                          info_url:
+                            type: string
+                            nullable: true
+                          auth_method:
+                            type: string
+                          data_type:
+                            type: string
+                      relationships:
+                        type: object
+                        properties:
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        read_url:
+                          type: string
+                          nullable: true
+                        write_url:
+                          type: string
+                          nullable: true
+                        info_url:
+                          type: string
+                          nullable: true
+                        auth_method:
+                          type: string
+                        data_type:
+                          type: string
+                    relationships:
+                      type: object
+                      properties:
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+    get:
+      summary: Returns a list of Sources
+      tags:
+      - Sources
+      responses:
+        '200':
+          description: source list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        attributes:
+                          type: object
+                          properties:
+                            read_url:
+                              type: string
+                              nullable: true
+                            write_url:
+                              type: string
+                              nullable: true
+                            info_url:
+                              type: string
+                              nullable: true
+                            auth_method:
+                              type: string
+                            data_type:
+                              type: string
+                        relationships:
+                          type: object
+                          properties:
+                            data_values:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+  "/sources/{id}":
+    get:
+      summary: retrieves a single source
+      tags:
+      - Sources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Source found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          read_url:
+                            type: string
+                            nullable: true
+                          write_url:
+                            type: string
+                            nullable: true
+                          info_url:
+                            type: string
+                            nullable: true
+                          auth_method:
+                            type: string
+                          data_type:
+                            type: string
+                      relationships:
+                        type: object
+                        properties:
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+        '404':
+          description: Source not found
+          content: {}
+    patch:
+      summary: updates a Source
+      tags:
+      - Sources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Source updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          read_url:
+                            type: string
+                            nullable: true
+                          write_url:
+                            type: string
+                            nullable: true
+                          info_url:
+                            type: string
+                            nullable: true
+                          auth_method:
+                            type: string
+                          data_type:
+                            type: string
+                      relationships:
+                        type: object
+                        properties:
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        read_url:
+                          type: string
+                          nullable: true
+                        write_url:
+                          type: string
+                          nullable: true
+                        info_url:
+                          type: string
+                          nullable: true
+                        auth_method:
+                          type: string
+                        data_type:
+                          type: string
+                    relationships:
+                      type: object
+                      properties:
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+    delete:
+      summary: deletes a source
+      tags:
+      - Sources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: data value deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+  "/transforms":
+    post:
+      summary: Creates a transform
+      tags:
+      - Transforms
+      parameters: []
+      responses:
+        '201':
+          description: transform created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          script:
+                            type: object
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        script:
+                          type: object
+                          nullable: true
+                    relationships:
+                      type: object
+                      properties:
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+    get:
+      summary: returns a list of Transforms
+      tags:
+      - Transforms
+      responses:
+        '200':
+          description: Transform List
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        attributes:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                              nullable: true
+                            script:
+                              type: object
+                              nullable: true
+                        relationships:
+                          type: object
+                          properties:
+                            data_values:
+                              type: object
+                              properties:
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      type:
+                                        type: string
+  "/transforms/{id}":
+    get:
+      summary: retrieves a Transform
+      tags:
+      - Transforms
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transform found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          script:
+                            type: object
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+        '404':
+          description: Transform not found
+          content: {}
+    patch:
+      summary: updates a transform
+      tags:
+      - Transforms
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transform updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            nullable: true
+                          script:
+                            type: object
+                            nullable: true
+                      relationships:
+                        type: object
+                        properties:
+                          data_values:
+                            type: object
+                            properties:
+                              data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    type:
+                                      type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          nullable: true
+                        script:
+                          type: object
+                          nullable: true
+                    relationships:
+                      type: object
+                      properties:
+                        data_values:
+                          type: object
+                          properties:
+                            data:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+    delete:
+      summary: removes a transform
+      tags:
+      - Transforms
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transform deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+servers:
+- url: http://{defaultHost}/api/v1
+  variables:
+    defaultHost:
+      default: localhost:3000
