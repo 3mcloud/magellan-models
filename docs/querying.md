@@ -2,7 +2,7 @@
 
 A key focus of Magellan is providing the ability to seamlessly query resources on the backend API. Querying can be done through many different ways, and we'll cover the main ways here.
 
-For the purposes of this documentation, we will have the following set up in place. The resource in question will be `/samples` and we will have a `Sample` model. Additionally the `/samples` entities include a parsed set of relationships to `sample_set` and `tests` where there's a singular sample set and many tests for any given Sample entity. Tests and Sample Sets also have their own models under Magellan's returned models dict. We are also assuming the user configuration works properly in these examples below.
+For the purposes of this documentation, we will have the following set up in place. The resource in question will be `/factions` and we will have a `Faction` model. Additionally the `/factions` entities include a parsed set of relationships to `units` and `universe` where there's a singular universe and many units for any given Faction entity. Universes and Units also have their own models under Magellan's returned models dict. We are also assuming the user configuration works properly in these examples below.
 
 
 ## Querying a single resource
@@ -11,23 +11,23 @@ There are many ways to query a singlular resource by the main ways are via `find
 
 ### Find()
 
-If I have an ID value that I want to use to search for a resource I can make a GET request to the `samples/ID` route. If the backend has a resource with that ID, it'll return that resource, and if it doesn't I'll get a 404 response. We can make calls to that endpoint using the `find(id)` function which returns a singular Magellan Model instance or an exception if we can't find a value or there's any other server error encountered.
+If I have an ID value that I want to use to search for a resource I can make a GET request to the `factions/ID` route. If the backend has a resource with that ID, it'll return that resource, and if it doesn't I'll get a 404 response. We can make calls to that endpoint using the `find(id)` function which returns a singular Magellan Model instance or an exception if we can't find a value or there's any other server error encountered.
 
 ```python
-inst = Sample.find("6eaac923-6a1f-4555-8c3f-afa3b9974675")
+inst = Faction.find("6eaac923-6a1f-4555-8c3f-afa3b9974675")
 inst.id # => "6eaac923-6a1f-4555-8c3f-afa3b9974675"
-inst.title # => "Sample A19283"
+inst.title # => "The Empire"
 ```
 
-Here we are looking for a sample with the ID "6eaac923-6a1f-4555-8c3f-afa3b9974675". We use the `.find()` function to look for that ID value, and in the end we get back a result.
+Here we are looking for a faction with the ID "6eaac923-6a1f-4555-8c3f-afa3b9974675". We use the `.find()` function to look for that ID value, and in the end we get back a result.
 
 ### find_by_{attribute}
 
-Additionally, say we wanted to search for the first sample with a given lot number, or some other identifier (say a title value). In this case, if that attribute is present in the OpenAPI specification, we can utilize a helper function that will query the `/samples` endpoint with a filter for that attribute. If we get any results back we'll return the first element we receive. This is important because if we receive multiple elements back in the response, only the first is returned to the user.
+Additionally, say we wanted to search for the first faction with a title, or some other identifier (say a description value). In this case, if that attribute is present in the OpenAPI specification, we can utilize a helper function that will query the `/factions` endpoint with a filter for that attribute. If we get any results back we'll return the first element we receive. This is important because if we receive multiple elements back in the response, only the first is returned to the user.
 
 ```python
-inst = Sample.find_by_title("Sample A19283")
-# This call does a GET /samples with a filter for the title, and a limit of 1
+inst = Faction.find_by_title("The Hive")
+# This call does a GET /factions with a filter for the title, and a limit of 1
 inst.id # => "6eaac923-6a1f-4555-8c3f-afa3b9974675"
 ```
 
@@ -42,15 +42,15 @@ If you wish to get aggregate collections of a resource, you can use the `where` 
 `where` is the primary means of querying the API. You can pass assignment operations for any set of attributes available to the model, and then a limit value (defaults to None for limit-less). `where` is useful if you want to search for all results in a list of possible IDs, or search for all elements with a similar title.
 
 ```python
-# Search for Samples in a list of IDs
+# Search for Factions in a list of IDs
 ids = ["123", "124", "125"..., "130"]
-list_of_samples = Sample.where(id=ids, filtering_arguments={"id": "in"}) 
-# search for all samples where the ID is in the list of IDs
+list_of_factions = Faction.where(id=ids, filtering_arguments={"id": "in"}) 
+# search for all factions where the ID is in the list of IDs
 
-matching_creator = Sample.where(creator_id="10938fk3910230", limit=10) 
-# => a list of up to 10 samples whose creator ID matches the input ID, remove the limit argument to find all samples
+matching_creator = Faction.where(creator_id="10938fk3910230", limit=10) 
+# => a list of up to 10 factions whose creator ID matches the input ID, remove the limit argument to find all factions
 
-compound_list = Sample.where(creator_id= my_id, id= ids, created= myTimestamp, filtering_arguments={"id": "in", "created": "geq"}, limit=100) 
+compound_list = Faction.where(creator_id= my_id, id= ids, created= myTimestamp, filtering_arguments={"id": "in", "created": "geq"}, limit=100) 
 #=> Find the first 100 entities created by Me, with an ID contained in the ids list, and created after or at a point in time past myTimestamp
 ```
 
@@ -66,11 +66,11 @@ The `where` query supports method chaining as well. This lets you create compoun
 
 ```python
 
-samples = Sample.where(creator_id = my_id).where(tag=my_tag)
+results = Faction.where(creator_id = my_id).where(tag=my_tag)
 # Get all results created by me with a specific tag
 
 # To set a limit after the first `where` call: 
-samples.limit(10) # Limits the number of results. This also is destructive to the internal state
+results.limit(10) # Limits the number of results. This also is destructive to the internal state
 ```
 
 You can also pass filtering_arguments in each `where` call as well.
