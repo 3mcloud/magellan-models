@@ -7,7 +7,7 @@ While reading resources is probably the main way most people will ever use Magel
 You can POST to the backend using two different methods, the class method `post_payload()` and the instance method `post`. The instance method is useful if you want to directly POST the model instance's representation to the backend API. 
 
 ```python
-inst = Sample() 
+inst = Faction() 
 
 # modify and set the instance's attributes
 ...
@@ -22,7 +22,7 @@ When you use the `post()` method, the server response json will be used to redef
 To post using any arbitrary JSON payload you can call the `post_payload()` function. This function takes in an arbitrary json payload, and then converts the JSON response from the POST request into a MagellanModel instance.
 
 ```python
-inst = Sample.post_payload(myJsonDict)
+inst = Faction.post_payload(myJsonDict)
 
 inst.id # => a server assigned UUID 
 inst.title # => "Hello from Magellan's Post Payload!"
@@ -36,7 +36,7 @@ Under the hood, the `post()` method actually calls the `post_payload()` function
 Say you already had a Magellan model instance and wanted to update it on the backend? You can modify the attributes of the model instance and then send a `patch()` call to update the backend with your changes. The `patch()` function takes the instance's representation and converts it into a PATCH request to the `/resource/id` path.
 
 ```python
-instance = Sample.find_by_title("Before the PATCH")
+instance = Faction.find_by_title("Before the PATCH")
 instance.title = "Patched via Magellan"
 instance.patch() # => sends a PATCH request with the updated Title
 instance.title # => "Patched via Magellan" on the backend and Magellan Instance
@@ -47,9 +47,9 @@ instance.title # => "Patched via Magellan" on the backend and Magellan Instance
 Well what if you wanted to delete a resource that's stored in the backend? Here you have two options, the class method `delete(id)` and the instance method `delete_self()`. In order to delete a resource, just pass the ID of the entity you want to delete and it'll send a DELETE request. Just note that this won't remove the Magellan model instance from your environment. You'll need to discard it on your own. 
 
 ```python
-# Both of these calls send the same DELETE request to /samples/123
-Sample.delete(123)
-Sample.find(123).delete_self()
+# Both of these calls send the same DELETE request to /factions/123
+Faction.delete(123)
+Faction.find(123).delete_self()
 ```
 
 ### Sync 
