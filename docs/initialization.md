@@ -33,10 +33,10 @@ The first dict is the Models dict and is a mapping of Model names to Model type 
 ```python
 models, funcs, config = initialize_with_json(myJson, myConf)
 
-print(models.keys()) # => ["Sample", "Lab", "Test", "__configuration"]
-Lab = models["Lab"]
+print(models.keys()) # => ["Faction", "Unit", "Roster", "__configuration"]
+Faction = models["Faction"]
 
-Lab.find_by_title("SeathForce").uuid # some UUID string
+Faction.find_by_title("The Empire").uuid # some UUID string
 ```
 
 ### Functions
@@ -60,7 +60,7 @@ A generic API access function is also provided under the key `_generic_api_funct
 # Given our previously generated models, and funcs from above... 
 api_query_func = funcs['_generic_api_function']
 
-resp = api_query_func("/labs?filter=[{"name": "creator_id", "op": "eq", "val": "12345"}]", method="GET")
+resp = api_query_func("/factions?filter=[{"name": "creator_id", "op": "eq", "val": "12345"}]", method="GET")
 
 if resp.status_code == 200:
     print(resp.json().get("meta", {}).get("total-count", "total-count is missing"))
