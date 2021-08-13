@@ -25,13 +25,13 @@ The Configuration JWT allows for a jwt token to be stored for a set of models vi
 
 ### api_endpoint: `str`
 
-The `api_endpoint` attribute is a string that stores the API url that the Magellan models are associated with. The final slash ("/") in the url should be removed. The idea being that a GET call to `f"{conf.api_endpoint}/samples` should be the same as a GET list call to the samples resource url.
+The `api_endpoint` attribute is a string that stores the API url that the Magellan models are associated with. The final slash ("/") in the url should be removed. The idea being that a GET call to `f"{conf.api_endpoint}/electronic_component` should be the same as a GET list call to the electronic_component resource url.
 
 This attribute will **almost always** need to be overwritten by a user.
 
 ### id_separator: `str`
 
-The `id_separator` attribute is a string value indicating the separator used in the paths for singular get requests. For example if I had a sample with id=123, I'd want to do a GET request to `{api_endpoint}/sample/123`. For a given openAPI spec, the path might actually be written as `{api_endpoint}/sample/{id_}` or `{api_endpoint}/sample/{identifier}` etc. The **id_separator should be a regex pattern** that is later nested by the openAPI parser into a larger regular expression to do route matching with. This lets you define a regex to support multiple ID separators as you'd like. By default this value is `"\{id_\}"`.
+The `id_separator` attribute is a string value indicating the separator used in the paths for singular get requests. For example if I had a electronic component with id=123, I'd want to do a GET request to `{api_endpoint}/electronic_component/123`. For a given openAPI spec, the path might actually be written as `{api_endpoint}/electronic_component/{component_id}` or `{api_endpoint}/electronic_component/{identifier}` etc. The **id_separator should be a regex pattern** that is later nested by the openAPI parser into a larger regular expression to do route matching with. This lets you define a regex to support multiple ID separators as you'd like. By default this value is `"\{id_\}"`.
 
 ### function_naming_style: `str`
 
