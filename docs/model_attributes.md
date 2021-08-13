@@ -8,26 +8,26 @@ Additionally you can use the static method 'list_methods()' which returns the li
 
 ## Attributes
 
-Say we have a `Sample` model instance named `sample_instance`. Additionally, the OpenAPI specification lists that there are 4 attributes `id, title, description, meta` for a given sample instance. We can directly query the attributes for an instance using the following syntax:
+Say we have a `Faction` model instance named `faction_instance`. Additionally, the OpenAPI specification lists that there are 4 attributes `id, title, description, meta` for a given faction instance. We can directly query the attributes for an instance using the following syntax:
 
 ```python
-sample_instance.id #=> returns the ID attribute
-sample_instance.title #=> returns the Title attribute
-sample_instance.nonAttribute # raises an AttributeNotFound error
+faction_instance.id #=> returns the ID attribute
+faction_instance.title #=> returns the Title attribute
+faction_instance.nonAttribute # raises an AttributeNotFound error
 ```
 
 Effectively the Magellan model generator will create property definitions for each attribute allowing for easy lookup and reference. Say we wanted to modify the attribute `title` in the instance, since the attribute is a property we can use the same basic attribute setter syntax to modify our instance!
 
 ```python
-sample_instance.title = "new Title" 
-assert sample_instance.title == "New Title" # passes 
+faction_instance.title = "new Title" 
+assert faction_instance.title == "New Title" # passes 
 ```
 
 It's important to note that these attributes are only a single layer deep, meaning if you have a dict object as an attribute, you'll need to set the whole dict and won't have helpful syntax to traverse the dict by itself.
 
 ```python
-sample_instance.meta.innerLayer.attrib = "fudge" # this doesn't work!
-sample_instance.meta["innerLayer"]["attrib"] = "fudge" # this should work
+faction_instance.meta.innerLayer.attrib = "fudge" # this doesn't work!
+faction_instance.meta["innerLayer"]["attrib"] = "fudge" # this should work
 ```
 
 Attribute access can be further configured in the MagellanConfig file.
@@ -50,11 +50,11 @@ You can also call the `{relationship}()` method which converts each of those ID 
 
 ```python
 # Example of plural relationships;
-# If a given Sample has many Tests
-sample_instance.tests() #-> [<Test1>, <Test2>, <Test3>, ...]
-sample_instance.add_test(test_four_id) 
-sample_instance.remove_test(test_two_id) 
-sample_instance.tests() #-> [<Test1>, <Test3>, <Test4>,...]
+# If a given Faction has many units
+faction_instance.units() #-> [<Unit1>, <Unit2>, <Unit3>, ...]
+faction_instance.add_unit(unit_four_id) 
+faction_instance.remove_unit(unit_two_id) 
+faction_instance.units() #-> [<Unit1>, <Unit3>, <Unit4>,...]
 ```
 
 Remember that after modifying relationships that you'll need to send a PATCH request to ensure your changes are persisted in the backend.
@@ -62,10 +62,10 @@ Remember that after modifying relationships that you'll need to send a PATCH req
 Additionally, you can do filtering inside the `{relatationship}()` method as well just as if you were doing a `{relationship_model}.where()` query. The arguments are the same and you can pass in attribute operations as needed. 
 
 ```python
-# Example of using relationship filtering using a Sample with many tests
-sample_inst.tests(title="Calorimetry Assay", filtering_arguments={"title": "starts_with"})
-# The above call sends a requests filtering to check that the tests returned match one of the IDs in the sample_inst tests relationship attribute
-# AND that the test's title starts with "Calorimetry Assay"
+# Example of using relationship filtering using a Faction with many units
+faction_inst.units(title="Clone Trooper Squad #", filtering_arguments={"title": "starts_with"})
+# The above call sends a requests filtering to check that the units returned match one of the IDs in the faction_inst units relationship attribute
+# AND that the unit's title starts with "Clone Trooper Squad #"
 # These filters are both applied with an "AND" operation by default, but it's up to the user to provide their own filter generator function
 ```
 
@@ -73,9 +73,9 @@ Some relationships might store more information than just the ID for a relations
 
 ```python
 
-sample_inst.add_test(test_id, additional_args={"access_level": 5, "priority": "VERY HIGH", "request_originator": "THE PRESIDENT OF THE PLANET"})
+faction_inst.add_unit(unit_id, additional_args={"access_level": 5, "priority": "VERY HIGH", "request_originator": "THE PRESIDENT OF THE PLANET"})
 
-sample_inst.tests_json() # -> [{"id": test_id, "type": "Test", "meta": {"access_level": 5, "priority": "VERY HIGH", "request_originator": "THE PRESIDENT OF THE PLANET"}}]
+faction_inst.units_json() # -> [{"id": unit_id, "type": "Unit", "meta": {"access_level": 5, "priority": "VERY HIGH", "request_originator": "THE PRESIDENT OF THE PLANET"}}]
 
 ```
 
