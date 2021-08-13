@@ -10,10 +10,6 @@ Dynamically Generate client-side models for interfacing with your own OpenAPI 3.
 
 Magellan Models (referred to as Magellan throughout the rest of this documentation) is a code generator that generates "client-side models" for a given OpenAPI spec that follows (by default) the JSON:API specification. A developer can modify their own configuration to provide support for other API specifications so long as they can also provide their own OpenAPI 3.0 json specification.
 
-### But why?
-
-Originally born as part of the Skylab initiative inside 3M, Magellan seeked to provide an easier means of programmatically accessing the Materials Informatics backend APIs available to researchers. While now Magellan is platform agnostic, the goal is still to provide a wrapper around an API, authentication, and potentially authorization, such that any developer can begin to play around with a given API without necessarily needing to deeply be aware of the various specific quirks that that API offers.
-
 ### How does Magellan compare to other OpenAPI client libraries like pyswagger, swagger-codegen, or bravado?
 
 Magellan prides itself in having an easier time to set up and get running. Most other OpenAPI client libraries require setting up authorization and importing custom clients and the result is a verbose and clunky syntax. Magellan instead tries to parse responses back for the user to ensure that accessing and modifying response elements is a seamless task. Alternative libraries often tend to differentiate between the client which sends requests and receives responses and the model itself which is a representation of data. Magellan however treats them both as the same, leading to less mental overhead for the developer (when things work).
@@ -63,16 +59,16 @@ As a user, it's up to you to decide if the automated functionality (and less pre
     
     # Alternatively use the "where" method to search for collections with your own filtering options
     
-    Sample = models["Sample"]
+    ElectronicComponent = models["ElectronicComponent"]
     
     # The config will dictate how we parse these arguments and format them into a filter
     # It could be as simple as filter[lotNum]="myLotNum"&filter["creator_id"=my_creator_id
     # or more complex like filters=[{field: "lotNum", val: "myLotNum", op: "eq"}, {field: "creator_id", val: my_creator_id, op: "eq"}]
     # It all depends on how you define your Magellan config!
-    samples = Sample.where(lotNum="myLotNum", creator_id= my_creator_id) # Returns a MagellanResponse which handles pagination to prevent large stalling periods
-    for sample in samples: 
+    components = ElectronicComponent.where(lotNum="myLotNum", creator_id= my_creator_id) # Returns a MagellanResponse which handles pagination to prevent large stalling periods
+    for component in components: 
         # Let's print the title out as we iterate through our results!
-        print(sample.title)
+        print(component.title)
 
 ```
 
@@ -114,9 +110,9 @@ All entities are returned via class methods. The main ones you'll want to use ar
 Passing in a "sort" argument also lets you order elements in the backend as well.
 
 example:
-` Sample.where(lotNum=["blah", "foo", "bar"], creator_id= steves_id, attribute_mapping={"lotNum": "in"}, limit=100) `
+` ElectronicComponent.where(lotNum=["blah", "foo", "bar"], creator_id= steves_id, attribute_mapping={"lotNum": "in"}, limit=100) `
 
-This call searches for the first 100 Samples created by Steve where the lotNum is either "blah", "bar", or "foo"
+This call searches for the first 100 Electronic Components created by Steve where the lotNum is either "blah", "bar", or "foo"
 
 #### `query()`
 
@@ -125,20 +121,20 @@ This method is currently somewhat functional. It takes in a list of filters, a p
 Filters are dictionaries with "key", "op", "val" keys.
 
 Example:
-`Sample.query(parameters={"filters": [{"key": "title", "op": "eq", "val": "Sample Title" }], "page_number": 1, "per_page"=30}, limit=30 )`
-Returns all the entities returned from a single GET call with 30 results max, in the first page of the pagination results, where the "Title" equals "Sample Title"
+`ElectronicComponent.query(parameters={"filters": [{"key": "title", "op": "eq", "val": "Example Title" }], "page_number": 1, "per_page"=30}, limit=30 )`
+Returns all the entities returned from a single GET call with 30 results max, in the first page of the pagination results, where the "Title" equals "Example Title"
 
 #### Singular Queries
 
 What if you wanted to get a single item by a "title" field or "id"? The easiest way is to use the `find(id)` method, which submits a GET request to the `https://api/model_resource/ID` route. If that ID exists, you'll get a model instance back, and if it 404s, you'll get None returned.
 
-` Sample.find("a valid UUID") -> instance_of_a_sample `
-` Sample.find("invalid ID") -> None `
+` ElectronicComponent.find("a valid UUID") -> instance(ElectronicComponent) `
+` ElectronicComponent.find("invalid ID") -> None `
 
 If you wanted to find a single entity by a given attribute, you can also do that using the `find_by_{attribute}` helper methods. These methods return THE FIRST entity that matches a given attribute.
 
 Example:
-`Sample.find_by_lotNum("a valid lotNumb") -> instance_of_a_sample`
+`ElectronicComponent.find_by_lotNum("a valid lotNumb") -> instance(ElectronicComponent)`
 
 ### Modifying Entities
 
@@ -185,11 +181,12 @@ You can also call the `{relationship}()` method which converts each of those ID 
 
 ```python
 # Example of plural relationships;
-# If a given Sample has many Tests
-Sample.tests() #-> [Test1<>, Test2<>, Test3<>, ...] 
-Sample.add_test(test_four_id) 
-Sample.remove_test(test_two_id) 
-Sample.tests() #-> [Test1<>, Test3<>, Test4<>...]
+# If a given ElectronicComponent has many Tests
+component = ElectronicComponent.find(123)
+component.tests() #-> [Test1<>, Test2<>, Test3<>, ...] 
+component.add_test(test_four_id) 
+component.remove_test(test_two_id) 
+component.tests() #-> [Test1<>, Test3<>, Test4<>...]
 ```
 
 ### Creating and Updating Entities
