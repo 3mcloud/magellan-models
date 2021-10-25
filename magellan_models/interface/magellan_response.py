@@ -80,17 +80,19 @@ class MagellanResponse:  # pylint: disable=too-many-instance-attributes
             self.process_next_page_of_results()
 
     def process_next_page_of_results(self) -> List[AbstractApiModel]:
-        """
-        Calls the next_url route, parses entities,
+        """Calls the next_url route, parses entities,
         adds them to current_entities,
         sets the next_url route to hit (DOESN'T ACTUALLY REQUEST IT)
         and updates the meta_data
-        Returns a list of AbstractApiModel entities representing the entities added
-        If next_url is None, this function does NOTHING
+
+        Returns:
+            List[AbstractApiModel]: All AbstractApiModel instances generated.
+                if iteration is complete or something went wrong, this returns an empty list
         """
         if not self.next_url or self.iteration_is_complete():
             # Done iterating, next_url is None when we have no more results to get
-            return
+            return []
+        
         result_list = [] # store elements from iterate_through_response 
         (header, kwargs) = self.__config__.create_header(**self.kwargs)
         if len(self) == 0:  # first call
