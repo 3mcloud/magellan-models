@@ -1,6 +1,6 @@
 """ MagellanResponse definition file """
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 import re
 import requests
 from magellan_models.config import MagellanConfig
@@ -79,47 +79,56 @@ class MagellanResponse:  # pylint: disable=too-many-instance-attributes
         while not self.iteration_is_complete():
             self.process_next_page_of_results()
 
-    def process_next_page_of_results(self) -> None:
-        """
-        Calls the next_url route, parses entities,
+    def process_next_page_of_results(self) -> List[AbstractApiModel]:
+        """Calls the next_url route, parses entities,
         adds them to current_entities,
         sets the next_url route to hit (DOESN'T ACTUALLY REQUEST IT)
         and updates the meta_data
-        Returns None
-        If next_url is None, this function does NOTHING
+
+        Returns:
+            List[AbstractApiModel]: All AbstractApiModel instances generated.
+                if iteration is complete or something went wrong, this returns an empty list
         """
         if not self.next_url or self.iteration_is_complete():
             # Done iterating, next_url is None when we have no more results to get
-            return
-
+            return []
+        
+        result_list = [] # store elements from iterate_through_response 
         (header, kwargs) = self.__config__.create_header(**self.kwargs)
         if len(self) == 0:  # first call
             parameters = self.__config__.create_params(self.__limit__, **kwargs)
             route = self.next_url
             resp = self.get_request(route, parameters, header)
-            self.iterate_through_response(resp)
+            result_list = self.iterate_through_response(resp)
         else:
             resp = self.get_request(url=self.next_url, headers=header)
-            self.iterate_through_response(resp)
+            result_list = self.iterate_through_response(resp)
 
         self.next_url = self.__config__.get_next_link_from_resp(resp)
         self.__meta_data__ = self.__config__.get_meta_data_from_resp(resp)
+        return result_list
 
-    def iterate_through_response(self, resp: requests.Response) -> None:
+    def iterate_through_response(self, resp: requests.Response) -> List[AbstractApiModel]:
         """Iterates through a Requests Response element, appending values to current_entities
 
         Args:
             resp (requests.Response): A response from a request call
+        Returns:
+            resp_list List[AbstractApiModel]: the AbstractApiModels created and stored in this invocation
         """
+        elems = []
         for payload in self.__config__.get_list_from_resp(resp.json()):
             if (
                 self.__limit__ is None
                 or len(self.__current_entities__) < self.__limit__
             ):
-                self.__current_entities__.append(self.__Model__.from_json(payload))
+                new_inst = self.__Model__.from_json(payload)
+                self.__current_entities__.append(new_inst)
+                elems.append(new_inst)
             else:
                 # Hit the limit!
                 break
+        return elems
 
     def get_request(
         self, url: str, params={}, headers={}

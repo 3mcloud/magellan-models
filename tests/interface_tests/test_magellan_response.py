@@ -167,6 +167,57 @@ def test_mag_resp_stops_iterating_even_if_limitless_at_end(
     assert len(mag_resp) == 20
 
 
+def test_mag_resp_process_next_pag_returns_new_entities(
+    requests_mock, generated_models
+):
+    Faction = generated_models.get("Faction")
+    config = Faction.configuration()
+    route = f"{config.api_endpoint}/{Faction.resource_name()}"
+    generated_params = "?filter=%5B%7B%22and%22%3A+%5B%5D%7D%5D&"
+
+    payload_entities = []
+    for i in range(20):
+        payload_entities.append(
+            {
+                "attributes": {
+                    "id": i + 1,
+                    "title": f"Fake Data {i}",
+                    "description": "Fake Data element",
+                    "tags": ["Fake", "Data"],
+                }
+            }
+        )
+    first_page = {
+        "data": payload_entities[0:10],
+        "meta": {"entity_count": 20},
+        "links": {"next": route + generated_params + "page2"},
+    }
+    second_page = {"data": payload_entities[10:], "meta": {"entity_count": 20}}
+
+    requests_mock.get(route + generated_params, status_code=200, json=first_page)
+    requests_mock.get(
+        route + generated_params + "page2", status_code=200, json=second_page
+    )
+    mag_resp = MagellanResponse(
+        url_path=route, Model=Faction, config=config, limit=None
+    )
+
+    assert requests_mock.called
+    assert requests_mock.call_count == 1  # Shouldn't hit second page until needed
+    assert len(mag_resp) == 10
+
+    entities = mag_resp.process_next_page_of_results()  # -> shouldn't do much
+    assert requests_mock.call_count == 2
+    assert len(mag_resp) == 20
+
+    assert len(entities) == 10
+    found_eleventh = False 
+    for elem in entities: 
+        if elem.title == "Fake Data 11":
+            found_eleventh = True 
+            break
+    assert found_eleventh
+
 def test_set_mag_resp_elem(requests_mock, generated_models):
     Faction = generated_models.get("Faction")
     config = Faction.configuration()
