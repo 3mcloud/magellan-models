@@ -24,7 +24,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="magellan-models",
-    version="1.0.0",
+    version="1.0.1",
     author="Talha Ahsan",
     author_email="tahsan@mmm.com",
     description="An API wrapper library that creates 'ActiveRecord' inspired models to access JSON:API compliant endpoints via OpenAPI specifications",
